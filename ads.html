@@ -1,72 +1,359 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ads Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
-        .ad-container {
-            margin: 20px auto;
-            max-width: 800px;
-        }
-        .ad {
-            margin: 10px;
-            display: inline-block;
-        }
-        .timer {
-            font-size: 24px;
-            margin: 20px;
-        }
-        .skip-btn {
-            display: none;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <h1>Advertisements</h1>
-    <div class="ad-container">
-        <div class="ad">
-            <img src="https://via.placeholder.com/300x200?text=Ad+1" alt="Ad 1">
-        </div>
-        <div class="ad">
-            <img src="https://via.placeholder.com/300x200?text=Ad+2" alt="Ad 2">
-        </div>
-        <div class="ad">
-            <img src="https://via.placeholder.com/300x200?text=Ad+3" alt="Ad 3">
-        </div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --accent: #E24B4A;
+    --accent2: #1D9E75;
+    --bg: var(--color-background-primary);
+    --bg2: var(--color-background-secondary);
+    --text: var(--color-text-primary);
+    --muted: var(--color-text-secondary);
+    --border: var(--color-border-tertiary);
+  }
+  body { font-family: 'DM Sans', sans-serif; }
+  .wrap { padding: 1.5rem 0 2rem; max-width: 640px; }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 2px;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .hero-sub {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .cd-box {
+    background: var(--bg2);
+    border-radius: 12px;
+    padding: 14px 8px 10px;
+    text-align: center;
+  }
+  .cd-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .cd-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+  .deadline-strip {
+    background: var(--bg2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .deadline-strip strong { color: var(--text); font-weight: 500; }
+  .progress-section { margin-bottom: 1.5rem; }
+  .prog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .prog-label { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .prog-count { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--text); }
+  .prog-track {
+    background: var(--bg2);
+    border-radius: 100px;
+    height: 12px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .prog-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: var(--accent2);
+    transition: width 0.5s ease;
+  }
+  .prog-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--text); }
+  .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
+  .input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .input-row input[type="number"] {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 0.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+  }
+  .add-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .add-btn:hover { opacity: 0.85; }
+  .add-btn:active { transform: scale(0.97); }
+  .log-section { margin-top: 0.5rem; }
+  .log-title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .log-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--bg2);
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .log-item .log-reps { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--accent); }
+  .log-item .log-time { color: var(--muted); font-size: 12px; }
+  .del-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 4px;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .del-btn:hover { color: var(--accent); }
+  .complete-banner {
+    background: #EAF3DE;
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: center;
+    color: #3B6D11;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 1rem;
+    display: none;
+  }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only">10,000 Pushup Challenge — countdown and progress tracker</h2>
+  <div class="hero-title">10K PUSHUP<br>CHALLENGE</div>
+  <div class="hero-sub">Deadline: 7 May 2026</div>
+
+  <div class="countdown-grid">
+    <div class="cd-box"><div class="cd-num" id="cd-days">0</div><div class="cd-label">Days</div></div>
+    <div class="cd-box"><div class="cd-num" id="cd-hrs">0</div><div class="cd-label">Hours</div></div>
+    <div class="cd-box"><div class="cd-num" id="cd-min">0</div><div class="cd-label">Mins</div></div>
+    <div class="cd-box"><div class="cd-num" id="cd-sec">0</div><div class="cd-label">Secs</div></div>
+  </div>
+
+  <div class="deadline-strip">
+    <span>Started: <strong id="start-date">—</strong></span>
+    <span>Target: <strong>10,000 reps</strong></span>
+    <span>Ends: <strong>7 May 2026</strong></span>
+  </div>
+
+  <div class="complete-banner" id="complete-banner">
+    Challenge complete! You crushed 10,000 pushups!
+  </div>
+
+  <div class="progress-section">
+    <div class="prog-header">
+      <span class="prog-label">Total progress</span>
+      <span class="prog-count"><span id="total-done">0</span> / 10,000</span>
     </div>
-    <div class="timer">Ad will end in <span id="countdown">15</span> seconds</div>
-    <button class="skip-btn" id="skipBtn">Skip Ad</button>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-meta">
+      <span id="pct-done">0% done</span>
+      <span id="remaining-reps">10,000 left</span>
+    </div>
+  </div>
 
-    <script>
-        let countdown = 15;
-        const countdownElement = document.getElementById('countdown');
-        const skipBtn = document.getElementById('skipBtn');
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-val" id="daily-needed">—</div>
+      <div class="stat-lbl">Per day needed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="daily-avg">—</div>
+      <div class="stat-lbl">Daily avg so far</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="days-left-stat">—</div>
+      <div class="stat-lbl">Days left</div>
+    </div>
+  </div>
 
-        const timer = setInterval(() => {
-            countdown--;
-            countdownElement.textContent = countdown;
-            if (countdown <= 0) {
-                clearInterval(timer);
-                skipBtn.style.display = 'block';
-                countdownElement.textContent = '0';
-            }
-        }, 1000);
+  <div class="input-row">
+    <input type="number" id="reps-input" placeholder="Enter pushups done..." min="1" max="5000" />
+    <button class="add-btn" onclick="addEntry()">+ Add</button>
+  </div>
 
-        skipBtn.addEventListener('click', () => {
-            window.location.href = 'page1.html';
-        });
-    </script>
-</body>
-</html>
+  <div class="log-section">
+    <div class="log-title">Session log</div>
+    <div id="log-list"></div>
+  </div>
+</div>
+
+<script>
+const GOAL = 10000;
+const DEADLINE = new Date('2026-05-07T23:59:59');
+const STORAGE_KEY = 'pushup_challenge_log_v1';
+
+let log = [];
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) log = JSON.parse(raw);
+  } catch(e) { log = []; }
+}
+
+function saveData() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(log)); } catch(e) {}
+}
+
+function totalDone() {
+  return log.reduce((s, e) => s + e.reps, 0);
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = DEADLINE - now;
+  if (diff <= 0) {
+    document.getElementById('cd-days').textContent = '0';
+    document.getElementById('cd-hrs').textContent = '0';
+    document.getElementById('cd-min').textContent = '0';
+    document.getElementById('cd-sec').textContent = '0';
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hrs  = Math.floor((diff % 86400000) / 3600000);
+  const min  = Math.floor((diff % 3600000)  / 60000);
+  const sec  = Math.floor((diff % 60000)    / 1000);
+  document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
+  document.getElementById('cd-hrs').textContent  = String(hrs).padStart(2,'0');
+  document.getElementById('cd-min').textContent  = String(min).padStart(2,'0');
+  document.getElementById('cd-sec').textContent  = String(sec).padStart(2,'0');
+}
+
+function updateProgress() {
+  const done = totalDone();
+  const pct = Math.min((done / GOAL) * 100, 100);
+  const left = Math.max(GOAL - done, 0);
+  document.getElementById('total-done').textContent = done.toLocaleString();
+  document.getElementById('prog-fill').style.width = pct.toFixed(1) + '%';
+  document.getElementById('pct-done').textContent = pct.toFixed(1) + '% done';
+  document.getElementById('remaining-reps').textContent = left.toLocaleString() + ' left';
+
+  if (done >= GOAL) {
+    document.getElementById('complete-banner').style.display = 'block';
+  }
+
+  const now = new Date();
+  const msLeft = Math.max(DEADLINE - now, 0);
+  const daysLeft = Math.max(Math.ceil(msLeft / 86400000), 1);
+  document.getElementById('days-left-stat').textContent = daysLeft;
+
+  const daysPerNeed = Math.ceil(left / daysLeft);
+  document.getElementById('daily-needed').textContent = left > 0 ? daysPerNeed.toLocaleString() : '0';
+
+  if (log.length > 0) {
+    const firstEntry = new Date(log[0].ts);
+    const daysSinceStart = Math.max(Math.ceil((now - firstEntry) / 86400000), 1);
+    document.getElementById('daily-avg').textContent = Math.round(done / daysSinceStart).toLocaleString();
+    document.getElementById('start-date').textContent = firstEntry.toLocaleDateString('en-IN', {day:'numeric', month:'short'});
+  } else {
+    document.getElementById('daily-avg').textContent = '—';
+    document.getElementById('start-date').textContent = 'Not started';
+  }
+}
+
+function renderLog() {
+  const list = document.getElementById('log-list');
+  list.innerHTML = '';
+  const reversed = [...log].reverse();
+  if (reversed.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--color-text-secondary);padding:8px 0;">No entries yet. Add your first session above.</div>';
+    return;
+  }
+  reversed.forEach((entry, i) => {
+    const realIdx = log.length - 1 - i;
+    const d = new Date(entry.ts);
+    const timeStr = d.toLocaleString('en-IN', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+    const div = document.createElement('div');
+    div.className = 'log-item';
+    div.innerHTML = `<span class="log-reps">${entry.reps.toLocaleString()}</span><span class="log-time">${timeStr}</span><button class="del-btn" title="Remove" onclick="deleteEntry(${realIdx})">✕</button>`;
+    list.appendChild(div);
+  });
+}
+
+function addEntry() {
+  const inp = document.getElementById('reps-input');
+  const val = parseInt(inp.value, 10);
+  if (!val || val < 1) { inp.focus(); return; }
+  log.push({ reps: val, ts: Date.now() });
+  saveData();
+  inp.value = '';
+  renderLog();
+  updateProgress();
+}
+
+function deleteEntry(idx) {
+  log.splice(idx, 1);
+  saveData();
+  renderLog();
+  updateProgress();
+  document.getElementById('complete-banner').style.display = totalDone() >= GOAL ? 'block' : 'none';
+}
+
+document.getElementById('reps-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') addEntry();
+});
+
+loadData();
+renderLog();
+updateProgress();
+updateCountdown();
+setInterval(updateCountdown, 1000);
+setInterval(updateProgress, 60000);
+</script>
